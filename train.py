@@ -109,7 +109,7 @@ else:
 
 transform_train_list = [
         #transforms.RandomResizedCrop(size=128, scale=(0.75,1.0), ratio=(0.75,1.3333), interpolation=3), #Image.BICUBIC)
-        transforms.Resize((h, w), interpolation=3),
+        transforms.Resize((h, w), interpolation=transforms.InterpolationMode.BICUBIC ),
         transforms.Pad(10),
         transforms.RandomCrop((h, w)),
         transforms.RandomHorizontalFlip(),
@@ -118,20 +118,20 @@ transform_train_list = [
         ]
 
 transform_val_list = [
-        transforms.Resize(size=(h, w),interpolation=3), #Image.BICUBIC
+        transforms.Resize(size=(h, w),interpolation=transforms.InterpolationMode.BICUBIC ), #Image.BICUBIC
         transforms.ToTensor(),
         transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
         ]
 
 if opt.PCB:
     transform_train_list = [
-        transforms.Resize((384,192), interpolation=3),
+        transforms.Resize((384,192), interpolation=transforms.InterpolationMode.BICUBIC ),
         transforms.RandomHorizontalFlip(),
         transforms.ToTensor(),
         transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
         ]
     transform_val_list = [
-        transforms.Resize(size=(384,192),interpolation=3), #Image.BICUBIC
+        transforms.Resize(size=(384,192),interpolation=transforms.InterpolationMode.BICUBIC ), #Image.BICUBIC
         transforms.ToTensor(),
         transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
         ]
@@ -142,7 +142,7 @@ if opt.erasing_p>0:
 if opt.color_jitter:
     transform_train_list = [transforms.ColorJitter(brightness=0.1, contrast=0.1, saturation=0.1, hue=0)] + transform_train_list
 
-print(transform_train_list)
+# print(transform_train_list)
 data_transforms = {
     'train': transforms.Compose( transform_train_list ),
     'val': transforms.Compose(transform_val_list),
@@ -156,7 +156,7 @@ if opt.train_all:
 image_datasets = {}
 image_datasets['train'] = datasets.ImageFolder(os.path.join(data_dir, 'train' + train_all),
                                           data_transforms['train'])
-image_datasets['val'] = datasets.ImageFolder(os.path.join(data_dir, 'val'),
+image_datasets['val'] = datasets.ImageFolder(os.path.join(data_dir, 'val'), #modify
                                           data_transforms['val'])
 
 dataloaders = {x: torch.utils.data.DataLoader(image_datasets[x], batch_size=opt.batchsize,
@@ -239,7 +239,8 @@ def train_model(model, criterion, optimizer, scheduler, num_epochs=25):
             if phase == 'train':
                 model.train(True)  # Set model to training mode
             else:
-                model.train(False)  # Set model to evaluate mode
+                model.train(False)  # Set model to evaluate mode   # modify
+                #continue
 
             running_loss = 0.0
             running_corrects = 0.0
@@ -473,7 +474,7 @@ if opt.PCB:
 
 opt.nclasses = len(class_names)
 
-print(model)
+# print(model)
 
 # model to gpu
 model = model.cuda()

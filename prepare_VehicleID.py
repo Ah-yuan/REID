@@ -7,7 +7,7 @@ def copy_file(s, t):
             copyfile(root+'/'+name,t+'/'+name)
 
 # You only need to change this line to your dataset download path
-download_path = './data/VehicleID_V1.0/'
+download_path = 'VeRi'
 
 if not os.path.isdir(download_path):
     print('please change the download_path')

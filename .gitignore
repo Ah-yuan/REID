@@ -2,6 +2,8 @@
 outputs/
 model/*
 logs/
+VeRi/
+VeRi-LT/
 __pycache__/
 core
 GPU-Re-Ranking/extension/adjacency_matrix/build_adjacency_matrix.egg-info/

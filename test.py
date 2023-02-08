@@ -236,7 +236,7 @@ def get_id(img_path):
             labels.append(-1)
         else:
             labels.append(int(label))
-        camera_id.append(int(camera[0]))
+        camera_id.append(int(camera[0:3]))
     return camera_id, labels
 
 gallery_path = image_datasets['gallery'].imgs
@@ -306,7 +306,7 @@ model = fuse_all_conv_bn(model)
 dummy_forward_input = torch.rand(opt.batchsize, 3, h, w).cuda()
 model = torch.jit.trace(model, dummy_forward_input)
 
-print(model)
+# print(model)  # modify
 # Extract feature
 since = time.time()
 with torch.no_grad():

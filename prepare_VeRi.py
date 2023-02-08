@@ -7,7 +7,7 @@ def copy_file(s, t):
             copyfile(root+'/'+name,t+'/'+name)
 
 # You only need to change this line to your dataset download path
-download_path = './data/VeRi'
+download_path = 'VeRi'
 
 if not os.path.isdir(download_path):
     print('please change the download_path')
@@ -28,8 +28,10 @@ if not os.path.isdir(save_path):
 #train
 os.mkdir(download_path + '/pytorch')
 train_save_path = download_path + '/pytorch/train'
+val_save_path = download_path + '/pytorch/val'
 if not os.path.isdir(train_save_path):
     os.mkdir(train_save_path)
+    os.mkdir(val_save_path)
 
     for root, dirs, files in os.walk(train_path, topdown=True):
         for name in files:
@@ -39,6 +41,8 @@ if not os.path.isdir(train_save_path):
             src_path = train_path + '/' + name
             dst_path = train_save_path + '/v' + ID[0]
             if not os.path.isdir(dst_path):
+                os.mkdir(dst_path)
+                dst_path = val_save_path + '/' + ID[0]  #first image is used as val image
                 os.mkdir(dst_path)
             copyfile(src_path, dst_path + '/' + name)
 
@@ -81,7 +85,7 @@ if not os.path.isdir(train_save_path):
 #---------------------------------------
 #train_all
 train_path = save_path
-train_save_path = download_path + '/train_all'
+train_save_path = download_path + '/pytorch/train_all'
 if not os.path.isdir(train_save_path):
     os.mkdir(train_save_path)
 
@@ -101,3 +105,4 @@ if not os.path.isdir(train_save_path):
 #if not os.path.isdir(train_veri_path):
 #    os.system('rsync -r %s/ %s/'%(os.path.abspath(train_save_path) , os.path.abspath(train_veri_path) ) )
 #    os.system('rsync -r %s/ %s/'%(os.path.abspath(original_train_save_path) , os.path.abspath(train_veri_path) ) )
+
